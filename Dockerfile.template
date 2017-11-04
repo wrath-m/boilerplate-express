@@ -1,0 +1,14 @@
+FROM <<REPLACE_WITH_DOCKER_IMAGE_FROM>>
+
+RUN apt update
+RUN apt install -y sudo
+RUN apt install -y nano
+COPY sudoers /etc
+
+ADD src /usr/src
+COPY files /
+
+RUN runuser -l <<REPLACE_WITH_DOCKER_USER>> -c "bash /install.bash"
+RUN rm /install.bash
+
+CMD runuser -l <<REPLACE_WITH_DOCKER_USER>> -c "bash /start.bash & sleep infinity"
